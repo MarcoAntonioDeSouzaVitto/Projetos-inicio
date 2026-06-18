@@ -1,16 +1,11 @@
 def adicionar():
-    global i
-    dados.append([])
-    i += 1
     print("\n--==Nome da Tarefa==--")
     nome = str(input("Tarefa: "))
-    dados[i].append(nome)
     print("\n--==Categoria==--")
     categoria = str(input("Categoria: "))
-    dados[i].append(categoria)
     print("\n--==Status==--")
     status = str(input("Pendente/Concluída: "))
-    dados[i].append(status)
+    dados.append([nome,categoria,status])
 def alterar():
     print("\n")
     print("--== Dados Salvos ==--")
@@ -50,6 +45,10 @@ def alterar():
             dados[choseY][2] = status_novo
             print("DADOS ALTERADOS COM SUCESSO!")
 def visualizar():
+    if not dados:
+        print("\nNenhuma tarefa cadastrada")
+        return
+    print("\n--== Lista de Tarefas ==--")
     for indice, tarefa in enumerate(dados):
         print(f"[{indice}] {tarefa[0]} ({tarefa[1]}) - Status: {tarefa[2]}")
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -58,7 +57,6 @@ dados = [
     ["Estudar Python", "Estudos", "Pendente"],
     ["Comprar leite", "Mercado", "Pendente"]
 ]
-i = -1
 while True:
     print("\n--==Lista de Tarefas==--")
     print(" [1]Adicionar Tarefa\n [2]Alterar Tarefa\n [3]Visualizar")
@@ -70,5 +68,4 @@ while True:
         alterar()
     if acao == 3:
         visualizar()
-
 
