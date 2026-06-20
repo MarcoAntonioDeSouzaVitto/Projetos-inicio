@@ -1,3 +1,5 @@
+import json
+from datetime import datetime
 def adicionar():
     print("\n--==Nome da Tarefa==--")
     nome = str(input("Tarefa: "))
@@ -5,12 +7,14 @@ def adicionar():
     categoria = str(input("Categoria: "))
     print("\n--==Status==--")
     status = str(input("Pendente/Concluída: "))
-    dados.append([nome,categoria,status])
+    hora_atual = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    dados.append([nome,categoria,status,hora_atual])
+
 def alterar():
     print("\n")
     print("--== Dados Salvos ==--")
     for indice, tarefa in enumerate(dados):
-        print(f"[{indice}] {tarefa[0]} ({tarefa[1]}) - Status: {tarefa[2]}")
+        print(f"[{indice}] {tarefa[0]} ({tarefa[1]}) - Status: {tarefa[2]} | {tarefa[3]}")
     mudar = int(input("\n[1] Remover | [2] Substituir\nAção: "))
     if mudar == 1:
         choseX = int(input("Posição X dos Itens: "))
@@ -43,23 +47,31 @@ def alterar():
             dados[choseY][1] = categoria_novo
             status_novo = str(input("Novo status: "))
             dados[choseY][2] = status_novo
+            hora_nova = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            dados[choseY][3] = hora_nova
             print("DADOS ALTERADOS COM SUCESSO!")
+
 def visualizar():
     if not dados:
         print("\nNenhuma tarefa cadastrada")
         return
     print("\n--== Lista de Tarefas ==--")
     for indice, tarefa in enumerate(dados):
-        print(f"[{indice}] {tarefa[0]} ({tarefa[1]}) - Status: {tarefa[2]}")
+        print(f"[{indice}] {tarefa[0]} ({tarefa[1]}) - Status: {tarefa[2]} | {tarefa[3]}")
+
+def salvar():
+     with open("dados.json", "w", encoding="utf-8") as f:
+         json.dump(dados,f,indent=4,ensure_ascii=False)
+     print("SALVO COM SUCESSO!")
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 dados = [
-    ["Estudar Python", "Estudos", "Pendente"],
-    ["Comprar leite", "Mercado", "Pendente"]
+    ["Estudar Python", "Estudos", "Pendente", "20/06/2026 12:00:00"],
+    ["Comprar leite", "Mercado", "Pendente", "20/06/2026 12:00:00"]
 ]
 while True:
     print("\n--==Lista de Tarefas==--")
-    print(" [1]Adicionar Tarefa\n [2]Alterar Tarefa\n [3]Visualizar")
+    print(" [1]Adicionar Tarefa\n [2]Alterar Tarefa\n [3]Visualizar\n [4]Salvar")
     acao = int(input("Ação: "))
     if acao == 1:
         adicionar()
@@ -68,4 +80,6 @@ while True:
         alterar()
     if acao == 3:
         visualizar()
+    if acao == 4:
+        salvar()
 
